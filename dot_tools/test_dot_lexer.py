@@ -27,8 +27,10 @@ def reserve():
 
 @istest
 def symbols():
-    s = '{ } [ ] = , ;'
-    e = ['LCURLY', 'RCURLY', 'LSQUARE', 'RSQUARE', 'EQUAL', 'COMMA', 'SEMI']
+    s = '{ } [ ] = , ; : -> --'
+    e = ['LCURLY', 'RCURLY', 'LSQUARE', 'RSQUARE', 'EQUAL', 'COMMA', 'SEMI',
+        'COLON', 'ARROW', 'DDASH',
+    ]
     lexit(s, e)
 
 @istest

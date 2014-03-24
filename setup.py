@@ -4,6 +4,7 @@ try:
     setuptools_kwargs = {
         'install_requires': [
           'ply',
+          'betterast',
         ],
         'provides': ['dot_tools'],
         'zip_safe': False

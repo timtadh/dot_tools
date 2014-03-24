@@ -3,4 +3,6 @@
 *.swp
 *.swo
 env
+dot_parser_tab.py
+dot_parser_tab.pyc
 

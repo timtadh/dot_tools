@@ -16,7 +16,7 @@ reserved = dict(
 tokens = reserved.values() + [
     'ID',
     'LSQUARE', 'RSQUARE', 'LCURLY', 'RCURLY',
-    'EQUAL', 'COMMA', 'SEMI',
+    'EQUAL', 'COMMA', 'SEMI', 'COLON', 'ARROW', 'DDASH',
 ]
 
 # Common Regex Parts
@@ -48,6 +48,9 @@ class Lexer(object):
 
     tokens = tokens
 
+    t_ARROW = r'->'
+    t_DDASH = r'--'
+    t_COLON = r':'
     t_SEMI = r'\;'
     t_EQUAL = r'='
     t_COMMA = r','
