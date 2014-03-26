@@ -17,6 +17,7 @@ tokens = reserved.values() + [
     'ID',
     'LSQUARE', 'RSQUARE', 'LCURLY', 'RCURLY',
     'EQUAL', 'COMMA', 'SEMI', 'COLON', 'ARROW', 'DDASH',
+    'COMMENT',
 ]
 
 # Common Regex Parts
@@ -113,10 +114,18 @@ class Lexer(object):
         t.lexer.lineno += t.value.count("\n")
 
     @Token(r'\#.*')
-    def t_COMMENT(self, token):
-        return None
+    def t_COMMENT_sharp(self, token):
+        token.type = 'COMMENT'
+        token.value = token.value[1:]
+        return token
 
-    @Token(r'(/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+/)|(//.*)')
+    @Token(r'//.*')
+    def t_COMMENT_slash(self, token):
+        token.type = 'COMMENT'
+        token.value = token.value[2:]
+        return token
+
+    @Token(r'/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+/')
     def t_COMMENT_C(self, token):
         lines = len(token.value.split('\n')) - 1
         if lines < 0: lines = 0

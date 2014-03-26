@@ -11,12 +11,10 @@ from dot_lexer import Lexer
 def lexit(s, e, v=None):
     l = Lexer()
     l.input(s)
-    print
     for i, (tok, et) in enumerate(zip(l, e)):
         eq(tok.type, et)
         if v:
             eq(tok.value, v[i])
-        print tok
     eq(i+1, len(e))
 
 @istest
