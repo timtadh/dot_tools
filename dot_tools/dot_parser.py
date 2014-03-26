@@ -58,6 +58,7 @@ class Parser(object):
         return 'graph_%d' % self.g_id
 
     def p_error(self, t):
+        print t
         raise SyntaxError(t)
 
     def p_Graphs_1(self, t):
@@ -204,7 +205,7 @@ class Parser(object):
               | ID EQUAL ID COMMA
               | ID EQUAL ID SEMI
         '''
-        t[0] = Node('=').addkid(t[1]).addkid(t[3])
+        t[0] = Node('=').addkid(Node(t[1])).addkid(Node(t[3]))
 
     def p_EdgeStmt_1(self, t):
         '''
@@ -214,10 +215,10 @@ class Parser(object):
         p = t[1]
         edges = list()
         for op, n in t[2]:
-            n = Node(op.label).addkid(p).addkid(n)
+            e = Node(op.label).addkid(p).addkid(n)
             if len(t) == 4:
-                n.addkid(Node('Attrs', children=t[3]))
-            edges.append(n)
+                e.addkid(Node('Attrs', children=t[3]))
+            edges.append(e)
             p = n
         t[0] = Node('Edges', children=edges)
 

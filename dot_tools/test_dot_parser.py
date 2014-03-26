@@ -23,6 +23,7 @@ def yaccs():
         b:a:ne # wizard
         a -> b;
         b->a [label=backedge]
+        a->b->c->d
         subgraph sq { c -> d} -> subgraph {e->f}
       }# junk
       # what
@@ -30,6 +31,7 @@ def yaccs():
         x;
       }
     ''', lexer=Lexer())
+    print t.dotty()
     eq(t.label, 'Graphs')
     eq(
       [k.label for k in t.children],
