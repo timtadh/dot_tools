@@ -1,11 +1,11 @@
-# Dot Tools - Parser for the Graphviz's Dot Language
+# Dot Tools - Parser for Graphviz's Dot Language
 
 by Tim Henderson (tim.tadh@gmail.com)
 
 This module provides a parser for the dot langauge. You can use it to produce an
 AST of a `*.dot` file. It deals correctly with the language as specified on in
 the [graphviz documentation](http://www.graphviz.org/doc/info/lang.html). If you
-find it cannot parse your `dot` file open and issue and let me know.
+find it cannot parse your `dot` file open an issue and let me know.
 
 Example:
 
