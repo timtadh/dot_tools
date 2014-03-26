@@ -37,7 +37,7 @@ It also supports visualizing the AST as dot:
 
     print tree.dotty()
 
-Output
+Output (after running it through graphviz)
 
 ![ast.png](ast.png)
 
