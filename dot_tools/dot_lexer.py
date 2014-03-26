@@ -102,12 +102,25 @@ class Lexer(object):
         token.value = token.value[1:-1]
         return token
 
-    name = r'<(.|\n)*>'
+    name = r'<'
     @Token(name)
     def t_ID_Html(self, token):
         token.type = 'ID'
-        token.value = token.value[1:-1]
-        return token
+        lexstart = self.lexer.lexpos - len(token.value)
+        lexpos = lexstart
+        lexdata = self.lexer.lexdata
+        count = 1
+        while lexpos < self.lexer.lexlen:
+            lexpos += 1
+            if lexdata[lexpos] == '<':
+                count += 1
+            elif lexdata[lexpos] == '>':
+                count -= 1
+            if count == 0:
+                self.lexer.lexpos = lexpos+1
+                return MyLexToken(
+                    'ID', lexdata[lexstart+1:lexpos], token.lineno, lexstart)
+        raise Exception, "could not lex html"
 
     @Token(r'\n+')
     def t_newline(self, t):

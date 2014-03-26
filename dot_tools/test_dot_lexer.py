@@ -46,8 +46,13 @@ def id_string():
 
 @istest
 def id_html():
-    s = '<<html>\n<body>\na"sf"awef\n</body>\n</html>> '
-    e = ['ID',]
-    v = ['<html>\n<body>\na"sf"awef\n</body>\n</html>']
+    s = '''=<<html>
+<body>
+a"sf"awef
+</body>
+</html>>]
+a -> b'''
+    e = ['EQUAL', 'ID', 'RSQUARE', 'ID', 'ARROW', 'ID']
+    v = ['=', '<html>\n<body>\na"sf"awef\n</body>\n</html>', ']', 'a', '->', 'b']
     lexit(s, e, v)
 
