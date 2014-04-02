@@ -4,6 +4,7 @@
 #Email: tim.tadh@gmail.com
 #For licensing see the LICENSE file in the top level directory.
 
+import cgi
 
 class SimpleGraph(object):
 
@@ -18,21 +19,53 @@ class SimpleGraph(object):
         self._walk(ast)
         return self
 
-    def dotty(self, name):
+    def dotty_nid(self, nid):
+        return str(nid)
+
+    def dotty(self, name, no_header_footer=False, html=False):
+        def string(label):
+            if html:
+                label = (
+                    label.replace("'", "\\'").
+                    replace('"', '\\"').
+                    replace('\n', '\\n')
+                )
+                label = cgi.escape(label).encode('ascii', 'xmlcharrefreplace')
+                s = ''.join(
+                    '<tr><td align="left">' + line + "</td></tr>"
+                    for line in label.split('\\n')
+                )
+            else:
+                s = (
+                    label.replace('"', '').
+                    replace('"', '').
+                    replace('\\', '').
+                    replace('\n', '')
+                )
+            return s
+
         header = 'digraph %s {' % name
         footer = '}'
-        node = '%s [label="%s"];'
+        if html:
+            node = '%s [shape=rect, fontname="Courier", label=<<table border="0">%s</table>>];'
+        else:
+            node = '%s [label="%s"];'
         edge = '%s->%s [label="%s"];'
         nodes = list()
         edges = list()
 
         keys = sorted(self.nodes.keys())
         for nid in keys:
-            nodes.append(node % (nid, self.nodes[nid]))
+            nodes.append(node % (self.dotty_nid(nid), string(self.nodes[nid])))
 
         for s, t, label in self.edges:
-            edges.append(edge % (s, t, label))
+            edges.append(edge % (self.dotty_nid(s), self.dotty_nid(t), label))
 
+        if no_header_footer:
+            return (
+                '\n'.join(nodes) + '\n' +
+                '\n'.join(edges) + '\n'
+            )
         return (
             header + '\n' +
             '\n'.join(nodes) + '\n' +
