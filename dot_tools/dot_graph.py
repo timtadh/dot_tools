@@ -18,6 +18,27 @@ class SimpleGraph(object):
         self._walk(ast)
         return self
 
+    def dotty(self, name):
+        header = 'digraph %s {' % name
+        footer = '}'
+        node = '%s [shape=rect, label="%s"];'
+        edge = '%s->%s [label="%s"];'
+        nodes = list()
+        edges = list()
+
+        for nid, label in self.nodes.iteritems():
+            nodes.append(node % (nid, label))
+
+        for s, t, label in self.edges:
+            edges.append(edge % (s, t, label))
+
+        return (
+            header +
+            '\n'.join(nodes) + '\n' +
+            '\n'.join(edges) + '\n' +
+            footer + '\n'
+        )
+
     def _walk(self, root):
         for kid in root.kid('Stmts').children:
             if kid.label == 'Nodes':
