@@ -9,6 +9,7 @@ class SimpleGraph(object):
 
     def __init__(self):
         self.nodes = dict()
+        self.index = dict()
         self.edges = list()
 
     @staticmethod
@@ -42,6 +43,8 @@ class SimpleGraph(object):
         if label is None:
             label = nid
         self.nodes[nid] = label
+        self.index[label] = nodes = self.index.get(label, list())
+        nodes.append(nid)
 
     def _walk_edge(self, n):
         aid, bid, label = self._edge_info(n)
