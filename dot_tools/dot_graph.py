@@ -21,19 +21,20 @@ class SimpleGraph(object):
     def dotty(self, name):
         header = 'digraph %s {' % name
         footer = '}'
-        node = '%s [shape=rect, label="%s"];'
+        node = '%s [label="%s"];'
         edge = '%s->%s [label="%s"];'
         nodes = list()
         edges = list()
 
-        for nid, label in self.nodes.iteritems():
-            nodes.append(node % (nid, label))
+        keys = sorted(self.nodes.keys())
+        for nid in keys:
+            nodes.append(node % (nid, self.nodes[nid]))
 
         for s, t, label in self.edges:
             edges.append(edge % (s, t, label))
 
         return (
-            header +
+            header + '\n' +
             '\n'.join(nodes) + '\n' +
             '\n'.join(edges) + '\n' +
             footer + '\n'

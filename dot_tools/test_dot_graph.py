@@ -43,3 +43,22 @@ def build_graph():
       ])
     )
 
+@istest
+def simple_dot_equality():
+    t = Parser().parse('''
+      digraph G {
+        a [label="wizard"];
+        b [label="wally"];
+        c [label="wonky"];
+        d [label="wozniac"];
+        a->b [label=""];
+        a->c [label=""];
+        c->d [label=""];
+        d->a [label="backref"];
+      }
+    ''', lexer=Lexer())
+    t2 = Parser().parse(SimpleGraph.build(t.kid('Graph')).dotty('G'), lexer=Lexer())
+    for a, b in zip(t, t2):
+        print a.label, b.label
+    eq(t, t2)
+
