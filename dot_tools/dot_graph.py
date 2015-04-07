@@ -56,7 +56,7 @@ class SimpleGraph(object):
 
         keys = sorted(self.nodes.keys())
         for nid in keys:
-            nodes.append(node % (self.dotty_nid(nid), string(self.nodes[nid])))
+            nodes.append(node % (self.dotty_nid(nid), string(self.nodes[nid].get('label', nid))))
 
         for s, t, label in self.edges:
             edges.append(edge % (self.dotty_nid(s), self.dotty_nid(t), label))
@@ -94,12 +94,12 @@ class SimpleGraph(object):
 
     def _walk_node(self, n):
         nid = n.children[0].label
-        label = self._get_label(n)
-        if label is None:
-            label = nid
-        self.nodes[nid] = label
-        self.index[label] = nodes = self.index.get(label, list())
-        nodes.append(nid)
+        attrs = self._walk_attrs(n.kid('Attrs'))
+        label = self._get_label(attrs)
+        self.nodes[nid] = attrs
+        if label is not None:
+            self.index[label] = nodes = self.index.get(label, list())
+            nodes.append(nid)
 
     def _walk_edge(self, n):
         aid, bid, label = self._edge_info(n)
@@ -114,23 +114,24 @@ class SimpleGraph(object):
         aid = n.children[0].label
         bid = n.children[1].label
         if aid not in self.nodes:
-            self.nodes[aid] = aid
+            self.nodes[aid] = {}
         if bid not in self.nodes:
-            self.nodes[bid] = bid
-        label = self._get_label(n)
+            self.nodes[bid] = {}
+        attrs = self._walk_attrs(n.kid('Attrs'))
+        label = self._get_label(attrs)
         if label is None:
             label = ''
         return aid, bid, label
 
-    def _get_label(self, n):
-        attrs = n.kid('Attrs')
+    def _get_label(self, attrs):
         if attrs is not None:
-            attrs = self._walk_attrs(attrs)
             if 'label' in attrs:
                 return attrs['label']
         return None
 
     def _walk_attrs(self, n):
+        if n is None:
+            return {}
         attrs = dict()
         for kid in n.children:
             if kid.label == '=':

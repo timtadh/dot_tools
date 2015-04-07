@@ -28,11 +28,11 @@ def build_graph():
     ''', lexer=Lexer())
     graphs = [k for k in t.children if k.label == 'Graph']
     g = SimpleGraph.build(graphs[1])
-    eq(g.nodes, {'x':'quantal'})
+    eq(g.nodes, {'x':{'label': 'quantal'}})
     eq(g.edges, [])
 
     g = SimpleGraph.build(graphs[0])
-    eq(g.nodes, {'a':'a', 'b':'b', 'c':'c', 'd':'d', 'e':'<html>asdf</html>', 'f':'f'})
+    eq(g.nodes, {'a':{}, 'b':{}, 'c':{}, 'd':{}, 'e':{'label':'<html>asdf</html>'}, 'f':{}})
     eq(set(g.edges),
       set([
         ('a', 'b', ''),
