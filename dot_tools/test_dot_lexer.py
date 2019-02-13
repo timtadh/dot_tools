@@ -45,6 +45,13 @@ def id_string():
     lexit(s, e, v)
 
 @istest
+def id_string_with_newline():
+    s = '"sdaf \n asdf"'
+    e = ['ID']
+    v = ['sdaf \n asdf']
+    lexit(s, e, v)
+
+@istest
 def id_html():
     s = '''=<<html>
 <body>
