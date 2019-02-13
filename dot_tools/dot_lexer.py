@@ -82,7 +82,7 @@ class Lexer(object):
         token.value = float(token.value)
         return token
 
-    name = r'".*?"'
+    name = r'"(\n|\n\r|.)*?"'
     @Token(name)
     def t_ID_String(self, token):
         token.type = 'ID'

@@ -53,3 +53,26 @@ def yaccs():
       set(['Nodes', 'Edges', 'Comments', 'graphAttrs', 'Assigns'])
     )
 
+
+@istest
+def regression_1():
+    t = Parser().parse('''
+digraph G {
+node [shape=box]
+"ENTRY" -> "0"
+"0" [label="0: BBlock(#9)
+idom: None"]
+}
+''', lexer=Lexer())
+    print t.dotty()
+    eq(t.label, 'Graphs')
+    eq(
+      [k.label for k in t.children],
+      ['Graph']
+    )
+    graph = t.children[0]
+    eq(
+      [k.label for k in graph.kid('Stmts').children],
+      ['Nodes', "Edges", "nodeAttrs"]
+    )
+
